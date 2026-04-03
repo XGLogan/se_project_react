@@ -1,3 +1,7 @@
+## Backend Repository
+
+https://github.com/XGLogan/se_project_express
+
 # WTWR
 
 WTWR is a React + Vite weather-based clothing app. It fetches current weather data, displays suggested clothing items for the temperature, and connects to a backend API for authentication, profile updates, item creation, item deletion, and likes.

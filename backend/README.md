@@ -1,8 +1,6 @@
 # Project Video
 https://drive.google.com/file/d/1WmQFQ08_gdiuC19S37w4qL6gtRCs-Gf1/view?usp=drive_link
 
-## Backend Repository
-https://github.com/XGLogan/se_project_react#
 
 # WTWR Back End
 
