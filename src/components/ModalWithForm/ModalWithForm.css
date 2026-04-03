@@ -57,7 +57,7 @@
 
 .modal__input {
   display: block;
-  border-bottom: 1px, black;
+  border-bottom: 1px black;
   border-top: 0px;
   border-left: 0px;
   border-right: 0px;
@@ -82,7 +82,6 @@
 .modal__label {
   width: 496px;
   height: 52px;
-  top: 265px;
   top: 265px;
   left: 500px;
   border-width: 1px;

@@ -33,10 +33,12 @@ export const weatherOptions = [
 
 export const defaultWeatherOptions = {
   day: {
+    condition: "clouds",
     url: new URL("../assets/Day/Cloudy.png", import.meta.url).href,
   },
   night: {
-    url: new URL("../assets/Night/RainNight.png", import.meta.url).href,
+    condition: "clear",
+    url: new URL("../assets/Night/Night.png", import.meta.url).href,
   },
 };
 
@@ -90,4 +92,4 @@ export const coordinates = {
   latitude: 40.7088,
 };
 
-export const APIkey = "9a3a96fe1985a7df16d56592a6650978";
+export const apiKey = "9a3a96fe1985a7df16d56592a6650978";

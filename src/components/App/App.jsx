@@ -18,7 +18,7 @@ import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnit
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 import { filterWeatherData, getWeather } from "../../utils/weatherApi";
-import { coordinates, APIkey, defaultClothingItems } from "../../utils/constants";
+import { coordinates, apiKey, defaultClothingItems } from "../../utils/constants";
 import {
   getItems,
   addItem,
@@ -167,7 +167,7 @@ function App() {
   };
 
   useEffect(() => {
-    getWeather(coordinates, APIkey)
+    getWeather(coordinates, apiKey)
       .then((data) => setWeatherData(filterWeatherData(data)))
       .catch((err) => console.error(err));
   }, []);
