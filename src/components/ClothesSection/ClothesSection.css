@@ -1,0 +1,11 @@
+.clothes-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cards__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}

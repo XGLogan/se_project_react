@@ -1,0 +1,52 @@
+.modal__content_type_confirm-delete {
+  max-width: 670px;
+  max-height: 280px;
+  border-radius: 20px;
+  background-color: #fff;
+  position: relative;
+  z-index: 1001;
+  padding: 60px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal__confirm-text {
+  margin: 0 0 40px;
+  max-width: 420px;
+  font-family: "Cabinet Grotesk", Arial, sans-serif;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.modal__delete-confirm-btn {
+  border: none;
+  background: none;
+  color: #ff4d00;
+  font-family: "Cabinet Grotesk", Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 24px;
+}
+
+.modal__cancel-btn {
+  border: none;
+  background: none;
+  color: #000;
+  font-family: "Cabinet Grotesk", Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .modal__content_type_confirm-delete {
+    width: calc(100% - 40px);
+    min-height: 240px;
+    padding: 50px 20px;
+  }
+}
