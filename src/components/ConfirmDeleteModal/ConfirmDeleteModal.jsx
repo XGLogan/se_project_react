@@ -1,7 +1,7 @@
 import "./ConfirmDeleteModal.css";
 import closeIcon from "../../assets/CloseButton.jpg";
 
-function ConfirmDeleteModal({ isOpen, onClose, onConfirm }) {
+function ConfirmDeleteModal({ isOpen, onClose, onConfirm, isLoading }) {
   return (
     <div className={`modal ${isOpen ? "modal_opened" : ""}`}>
       <div className="modal__content modal__content_type_confirm-delete">
@@ -24,7 +24,7 @@ function ConfirmDeleteModal({ isOpen, onClose, onConfirm }) {
           className="modal__delete-confirm-btn"
           onClick={onConfirm}
         >
-          Yes, delete item
+          {isLoading ? "Deleting..." : "Yes, delete item"}
         </button>
 
         <button

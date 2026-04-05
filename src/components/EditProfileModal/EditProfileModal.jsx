@@ -3,7 +3,7 @@ import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import useForm from "../../hooks/useForm";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function EditProfileModal({ isOpen, onClose, onUpdateProfile }) {
+function EditProfileModal({ isOpen, onClose, onUpdateProfile, isLoading }) {
   const currentUser = useContext(CurrentUserContext);
 
   const { values, handleChange, setValues } = useForm({
@@ -28,7 +28,7 @@ function EditProfileModal({ isOpen, onClose, onUpdateProfile }) {
   return (
     <ModalWithForm
       title="Change profile data"
-      buttonText="Save changes"
+      buttonText={isLoading ? "Saving..." : "Save changes"}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}

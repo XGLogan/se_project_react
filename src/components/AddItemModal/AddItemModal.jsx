@@ -3,7 +3,12 @@ import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import { useEffect } from "react";
 import useForm from "../../hooks/useForm";
 
-export default function AddItemModal({ onClose, isOpen, onAddItem }) {
+export default function AddItemModal({
+  onClose,
+  isOpen,
+  onAddItem,
+  isLoading,
+}) {
   const { values, handleChange, setValues } = useForm({
     name: "",
     imageUrl: "",
@@ -35,7 +40,7 @@ export default function AddItemModal({ onClose, isOpen, onAddItem }) {
       name="add-garment"
       isOpen={isOpen}
       onClose={onClose}
-      buttonText="Add garment"
+      buttonText={isLoading ? "Adding..." : "Add garment"}
       onSubmit={handleSubmit}
     >
       <label className="modal__label">

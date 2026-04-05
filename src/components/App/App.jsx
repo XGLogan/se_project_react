@@ -42,6 +42,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({});
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [currentUser, setCurrentUser] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -52,6 +53,7 @@ function App() {
 
   const closeActiveModal = () => {
     setActiveModal("");
+    setIsConfirmDeleteOpen(false);
   };
 
   const handleCardClick = (card) => {
@@ -81,15 +83,25 @@ function App() {
     setIsConfirmDeleteOpen(true);
   };
 
+  const handleRequest = (request, onSuccess) => {
+    setIsLoading(true);
+
+    return request()
+      .then(onSuccess)
+      .catch((err) => console.error(err))
+      .finally(() => setIsLoading(false));
+  };
+
   const handleAddItemModalSubmit = ({ name, imageUrl, weather }) => {
     const token = localStorage.getItem("jwt");
 
-    addItem({ name, imageUrl, weather }, token)
-      .then((newItem) => {
+    return handleRequest(
+      () => addItem({ name, imageUrl, weather }, token),
+      (newItem) => {
         setClothingItems((prevItems) => [newItem, ...prevItems]);
         closeActiveModal();
-      })
-      .catch((err) => console.error(err));
+      }
+    );
   };
 
   const handleDeleteItem = (item) => {
@@ -97,19 +109,21 @@ function App() {
 
     const token = localStorage.getItem("jwt");
 
-    removeItem(item._id, token)
-      .then(() => {
+    return handleRequest(
+      () => removeItem(item._id, token),
+      () => {
         setClothingItems((prevItems) =>
           prevItems.filter((card) => card._id !== item._id)
         );
         setIsConfirmDeleteOpen(false);
         setItemToDelete(null);
-      })
-      .catch((err) => console.error(err));
+      }
+    );
   };
 
   const handleCardLike = ({ _id, likes = [] }) => {
     const token = localStorage.getItem("jwt");
+
     const isLiked = likes.some((like) =>
       typeof like === "string"
         ? like === currentUser._id
@@ -130,41 +144,75 @@ function App() {
   };
 
   const handleLogin = ({ email, password }) => {
-    authorize({ email, password })
-      .then((data) => {
-        localStorage.setItem("jwt", data.token);
-        return checkToken(data.token);
-      })
-      .then((userData) => {
+    return handleRequest(
+      () =>
+        authorize({ email, password }).then((data) => {
+          localStorage.setItem("jwt", data.token);
+          return checkToken(data.token);
+        }),
+      (userData) => {
         setCurrentUser(userData);
         setIsLoggedIn(true);
         closeActiveModal();
-      })
-      .catch((err) => console.error(err));
+      }
+    );
   };
 
   const handleRegister = ({ name, avatar, email, password }) => {
-    register({ name, avatar, email, password })
-      .then(() => handleLogin({ email, password }))
-      .catch((err) => console.error(err));
+    return handleRequest(
+      () =>
+        register({ name, avatar, email, password })
+          .then(() => authorize({ email, password }))
+          .then((data) => {
+            localStorage.setItem("jwt", data.token);
+            return checkToken(data.token);
+          }),
+      (userData) => {
+        setCurrentUser(userData);
+        setIsLoggedIn(true);
+        closeActiveModal();
+      }
+    );
   };
 
   const handleUpdateProfile = ({ name, avatar }) => {
     const token = localStorage.getItem("jwt");
 
-    updateUserInfo({ name, avatar }, token)
-      .then((updatedUser) => {
+    return handleRequest(
+      () => updateUserInfo({ name, avatar }, token),
+      (updatedUser) => {
         setCurrentUser(updatedUser);
         closeActiveModal();
-      })
-      .catch((err) => console.error(err));
+      }
+    );
   };
 
   const handleSignOut = () => {
     localStorage.removeItem("jwt");
     setIsLoggedIn(false);
     setCurrentUser({});
+    setActiveModal("");
+    setIsConfirmDeleteOpen(false);
+    setItemToDelete(null);
   };
+
+  useEffect(() => {
+    const handleEscClose = (e) => {
+      if (e.key === "Escape") {
+        closeActiveModal();
+      }
+    };
+
+    if (!activeModal && !isConfirmDeleteOpen) {
+      return undefined;
+    }
+
+    document.addEventListener("keydown", handleEscClose);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscClose);
+    };
+  }, [activeModal, isConfirmDeleteOpen]);
 
   useEffect(() => {
     getWeather(coordinates, apiKey)
@@ -245,6 +293,7 @@ function App() {
               isOpen={activeModal === "add-garment"}
               onClose={closeActiveModal}
               onAddItem={handleAddItemModalSubmit}
+              isLoading={isLoading}
             />
 
             <ItemModal
@@ -261,24 +310,30 @@ function App() {
                 setItemToDelete(null);
               }}
               onConfirm={() => handleDeleteItem(itemToDelete)}
+              isLoading={isLoading}
             />
 
             <RegisterModal
               isOpen={activeModal === "register"}
               onClose={closeActiveModal}
               onRegister={handleRegister}
+              onLoginClick={handleLoginClick}
+              isLoading={isLoading}
             />
 
             <LoginModal
               isOpen={activeModal === "login"}
               onClose={closeActiveModal}
               onLogin={handleLogin}
+              onRegisterClick={handleRegisterClick}
+              isLoading={isLoading}
             />
 
             <EditProfileModal
               isOpen={activeModal === "edit-profile"}
               onClose={closeActiveModal}
               onUpdateProfile={handleUpdateProfile}
+              isLoading={isLoading}
             />
 
             <Footer />

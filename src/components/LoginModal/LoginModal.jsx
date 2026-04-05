@@ -1,8 +1,15 @@
 import { useEffect } from "react";
+import "./LoginModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import useForm from "../../hooks/useForm";
 
-function LoginModal({ isOpen, onClose, onLogin }) {
+function LoginModal({
+  isOpen,
+  onClose,
+  onLogin,
+  onRegisterClick,
+  isLoading,
+}) {
   const { values, handleChange, resetForm } = useForm({
     email: "",
     password: "",
@@ -25,17 +32,24 @@ function LoginModal({ isOpen, onClose, onLogin }) {
   return (
     <ModalWithForm
       title="Log In"
-      buttonText="Log In"
+      buttonText={isLoading ? "Logging in..." : "Log In"}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      buttonClassName="login-modal__submit-btn"
+      secondaryText="or"
+      secondaryButtonText="Sign Up"
+      onSecondaryClick={onRegisterClick}
+      secondaryButtonClassName="login-modal__switch-btn"
+      secondaryTextClassName="login-modal__secondary-text"
     >
       <label className="modal__label">
-        Email*
+        Email
         <input
           className="modal__input"
           type="email"
           name="email"
+          placeholder="Email"
           value={values.email}
           onChange={handleChange}
           required
@@ -43,11 +57,12 @@ function LoginModal({ isOpen, onClose, onLogin }) {
       </label>
 
       <label className="modal__label">
-        Password*
+        Password
         <input
           className="modal__input"
           type="password"
           name="password"
+          placeholder="Password"
           value={values.password}
           onChange={handleChange}
           required

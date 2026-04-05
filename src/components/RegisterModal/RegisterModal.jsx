@@ -1,8 +1,15 @@
 import { useEffect } from "react";
+import "./RegisterModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import useForm from "../../hooks/useForm";
 
-function RegisterModal({ isOpen, onClose, onRegister }) {
+function RegisterModal({
+  isOpen,
+  onClose,
+  onRegister,
+  onLoginClick, // 👈 ADD THIS
+  isLoading,
+}) {
   const { values, handleChange, resetForm } = useForm({
     name: "",
     avatar: "",
@@ -29,17 +36,24 @@ function RegisterModal({ isOpen, onClose, onRegister }) {
   return (
     <ModalWithForm
       title="Sign Up"
-      buttonText="Next"
+      buttonText={isLoading ? "Signing up..." : "Sign Up"}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      buttonClassName="register-modal__submit-btn"
+      secondaryText="or"
+      secondaryButtonText="Log In"
+      onSecondaryClick={onLoginClick}
+      secondaryButtonClassName="register-modal__switch-btn"
+      secondaryTextClassName="register-modal__secondary-text"
     >
       <label className="modal__label">
-        Email*
+        Email
         <input
           className="modal__input"
           type="email"
           name="email"
+          placeholder="Email"
           value={values.email}
           onChange={handleChange}
           required
@@ -47,11 +61,12 @@ function RegisterModal({ isOpen, onClose, onRegister }) {
       </label>
 
       <label className="modal__label">
-        Password*
+        Password
         <input
           className="modal__input"
           type="password"
           name="password"
+          placeholder="Password"
           value={values.password}
           onChange={handleChange}
           required
@@ -59,11 +74,12 @@ function RegisterModal({ isOpen, onClose, onRegister }) {
       </label>
 
       <label className="modal__label">
-        Name*
+        Name
         <input
           className="modal__input"
           type="text"
           name="name"
+          placeholder="Name"
           minLength="2"
           maxLength="30"
           value={values.name}
@@ -73,11 +89,12 @@ function RegisterModal({ isOpen, onClose, onRegister }) {
       </label>
 
       <label className="modal__label">
-        Avatar URL*
+        Avatar URL
         <input
           className="modal__input"
           type="url"
           name="avatar"
+          placeholder="Avatar URL"
           value={values.avatar}
           onChange={handleChange}
           required
