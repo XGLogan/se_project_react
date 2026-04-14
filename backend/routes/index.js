@@ -6,11 +6,7 @@ const clothingItemsRouter = require('./clothingItems');
 const { createUser, login } = require('../controllers/users');
 const auth = require('../middlewares/auth');
 const NotFoundError = require('../errors/not-found-err');
-
-const {
-  validateSignup,
-  validateSignin,
-} = require('../middlewares/validation');
+const { validateSignup, validateSignin } = require('../middlewares/validation');
 
 // Public routes
 router.post('/signup', validateSignup, createUser);

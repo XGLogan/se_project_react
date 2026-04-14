@@ -7,7 +7,7 @@ function RegisterModal({
   isOpen,
   onClose,
   onRegister,
-  onLoginClick, // 👈 ADD THIS
+  onLoginClick, 
   isLoading,
 }) {
   const { values, handleChange, resetForm } = useForm({
