@@ -20,8 +20,6 @@ app.use(express.json());
 
 app.use(requestLogger);
 
-// Project 15 crash test route
-// Must be before app.use(routes)
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Server will crash now');
