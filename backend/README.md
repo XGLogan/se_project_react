@@ -16,8 +16,10 @@ This back-end project provides the server-side API for the WTWR application. It 
 - Create clothing items
 - Delete clothing items
 - Like and unlike clothing items
-- Route protection with authorization middleware
-- Validation and centralized error handling
+- Protected routes with authorization middleware
+- Celebrate/Joi request validation
+- Centralized error handling
+- Request and error logging with Winston
 
 ## Technologies Used
 
@@ -25,15 +27,17 @@ This back-end project provides the server-side API for the WTWR application. It 
 - Express
 - MongoDB
 - Mongoose
+- JWT
 - bcryptjs
-- jsonwebtoken
-- validator
-- cors
-- ESLint
+- Celebrate / Joi
+- Validator
+- Winston
+- PM2
+- Nginx
+- Google Cloud VM
+- SSL / HTTPS
 
 ## Running the Project
-
-Make sure MongoDB is running locally.
 
 Install dependencies:
 

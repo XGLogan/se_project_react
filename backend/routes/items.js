@@ -9,14 +9,18 @@ const {
 } = require('../controllers/items');
 
 const auth = require('../middlewares/auth');
+const {
+  validateCreateItem,
+  validateItemId,
+} = require('../middlewares/validation');
 
 router.get('/', getItems);
 
 router.use(auth);
 
-router.post('/', createItem);
-router.delete('/:id', deleteItem);
-router.put('/:id/likes', likeItem);
-router.delete('/:id/likes', unlikeItem);
+router.post('/', validateCreateItem, createItem);
+router.delete('/:id', validateItemId, deleteItem);
+router.put('/:id/likes', validateItemId, likeItem);
+router.delete('/:id/likes', validateItemId, unlikeItem);
 
 module.exports = router;
