@@ -4,42 +4,45 @@ https://drive.google.com/file/d/1WmQFQ08_gdiuC19S37w4qL6gtRCs-Gf1/view?usp=drive
 
 # WTWR Back End
 
-This back-end project provides the server-side API for the WTWR application. It supports user registration and login with JWT-based authorization, user profile management, and CRUD operations for clothing items, including liking and unliking items.
+This is the back-end server for the WTWR (What to Wear?) application.
+
+The server handles:
+- user authentication
+- JWT-based authorization
+- user profile routes
+- clothing item routes
+
+It is deployed on a Google Cloud VM and served through Nginx with HTTPS.
 
 ## Features
 
 - User signup
-- User signin with JWT token
-- Get current user data
-- Update current user profile
-- Get all clothing items
-- Create clothing items
-- Delete clothing items
-- Like and unlike clothing items
-- Protected routes with authorization middleware
-- Celebrate/Joi request validation
-- Centralized error handling
-- Request and error logging with Winston
+- User signin
+- Protected routes
+- Get all items
+- Create items
+- Delete items
+- Like and unlike items
+- PM2 process management
+- HTTPS deployment
+- Reverse proxy with Nginx
 
 ## Technologies Used
 
 - Node.js
-- Express
+- Express.js
 - MongoDB
 - Mongoose
 - JWT
 - bcryptjs
-- Celebrate / Joi
-- Validator
-- Winston
 - PM2
 - Nginx
-- Google Cloud VM
-- SSL / HTTPS
+- Google Cloud
+- dotenv
+- celebrate / joi
 
-## Running the Project
-
-Install dependencies:
+## Running Locally
 
 ```bash
 npm install
+npm run dev

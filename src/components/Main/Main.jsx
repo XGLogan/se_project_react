@@ -3,6 +3,7 @@ import "./Main.css";
 import WeatherCard from "../WeatherCard/WeatherCard";
 import ItemCard from "../ItemCard/ItemCard";
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 function Main({
   weatherData,
@@ -12,33 +13,40 @@ function Main({
   isLoggedIn,
 }) {
   const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
+  const currentUser = useContext(CurrentUserContext);
 
-  const filteredCards = clothingItems.filter(
-    (item) => item.weather === weatherData.type
-  );
+  // Only the current user's own items, matched to today's weather.
+  const filteredCards = clothingItems.filter((item) => {
+    const ownerId =
+      typeof item.owner === "string" ? item.owner : item.owner?._id;
+
+    return item.weather === weatherData.type && ownerId === currentUser._id;
+  });
 
   return (
     <main>
       <WeatherCard weatherData={weatherData} />
 
-      <section className="cards">
-        <p className="card__text">
-          Today is {weatherData.temp[currentTemperatureUnit]}°
-          {currentTemperatureUnit} / You may want to wear:
-        </p>
+      {isLoggedIn && (
+        <section className="cards">
+          <p className="card__text">
+            Today is {weatherData.temp[currentTemperatureUnit]}°
+            {currentTemperatureUnit} / You may want to wear:
+          </p>
 
-        <ul className="cards__list">
-          {filteredCards.map((item) => (
-            <ItemCard
-              key={item._id}
-              item={item}
-              onCardClick={handleCardClick}
-              onCardLike={onCardLike}
-              isLoggedIn={isLoggedIn}
-            />
-          ))}
-        </ul>
-      </section>
+          <ul className="cards__list">
+            {filteredCards.map((item) => (
+              <ItemCard
+                key={item._id}
+                item={item}
+                onCardClick={handleCardClick}
+                onCardLike={onCardLike}
+                isLoggedIn={isLoggedIn}
+              />
+            ))}
+          </ul>
+        </section>
+      )}
     </main>
   );
 }

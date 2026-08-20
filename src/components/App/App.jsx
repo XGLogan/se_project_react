@@ -18,7 +18,7 @@ import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnit
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 import { filterWeatherData, getWeather } from "../../utils/weatherApi";
-import { coordinates, apiKey, defaultClothingItems } from "../../utils/constants";
+import { coordinates, apiKey } from "../../utils/constants";
 import {
   getItems,
   addItem,
@@ -36,7 +36,7 @@ function App() {
     temp: { F: 999, C: 999 },
   });
 
-  const [clothingItems, setClothingItems] = useState(defaultClothingItems);
+  const [clothingItems, setClothingItems] = useState([]);
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
@@ -46,6 +46,7 @@ function App() {
 
   const [currentUser, setCurrentUser] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAppReady, setIsAppReady] = useState(false);
 
   const handleToggleSwitchChange = () => {
     setCurrentTemperatureUnit((prevUnit) => (prevUnit === "F" ? "C" : "F"));
@@ -194,6 +195,9 @@ function App() {
     setActiveModal("");
     setIsConfirmDeleteOpen(false);
     setItemToDelete(null);
+    setSelectedCard({});
+    // The items effect below clears the gallery to a blank slate
+    // whenever isLoggedIn flips to false.
   };
 
   useEffect(() => {
@@ -221,15 +225,23 @@ function App() {
   }, []);
 
   useEffect(() => {
+    // Only logged-in users see clothing items; logging out clears
+    // the gallery to a blank slate so nothing lingers.
+    if (!isLoggedIn) {
+      setClothingItems([]);
+      return;
+    }
+
     getItems()
       .then((items) => setClothingItems(items))
       .catch((err) => console.error(err));
-  }, []);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const token = localStorage.getItem("jwt");
 
     if (!token) {
+      setIsAppReady(true);
       return;
     }
 
@@ -241,8 +253,15 @@ function App() {
       .catch((err) => {
         console.error(err);
         localStorage.removeItem("jwt");
-      });
+      })
+      .finally(() => setIsAppReady(true));
   }, []);
+
+  // Don't render until the stored token has been checked, so a
+  // logged-in refresh never flashes the logged-out UI first.
+  if (!isAppReady) {
+    return null;
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
